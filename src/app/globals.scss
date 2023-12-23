@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$base: #fff;
+$primary:#FF0831;
+$accent: #FFCCD4;
+$neutral: #060606;
+$softGray: #E6E6E6;
+
+.text-base {
+  color: $base;
+}
+.text-primary {
+  color: $primary;
+}
+.bg-primary {
+  background-color: $primary;
+  color:$base;
+}
+.text-accent {
+  color: $accent;
+}
+.text-neutral {
+  color: $neutral;
+}
+.text-softGray {
+  color: $softGray;
+}
+.bg-softGray {
+  background-color: $softGray;
+  color:$neutral;
+}
