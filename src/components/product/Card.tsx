@@ -5,7 +5,7 @@ export default function Card({ product }: any) {
     <>
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <Link href="/products/[id]" as={`/products/${product.id}`}>
-              <img className="rounded-t-lg m-auto block w-48 h-48" src={product.image} alt={product.title} />
+              <Image width={500} height={500} className="rounded-t-lg m-auto block w-48 h-48" src={product.image} alt={product.title} />
           </Link>
           <div className="p-5">
               <Link href="/products/[id]" as={`/products/${product.id}`}>
