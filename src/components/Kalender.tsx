@@ -4,6 +4,7 @@ import { Calendar } from 'primereact/calendar';
 import { addLocale } from 'primereact/api';
 import moment from '@/lib/moment';
 import KalenderModal from './KalenderModal';
+import Image from 'next/image';
 export default function Kalender({events}:any){
     const calendarRef = useRef(null)
     let today = new Date();
@@ -16,7 +17,7 @@ export default function Kalender({events}:any){
     console.log(calendarRef)
 
     const [date1, setDate1] = useState(null)
-    const [selectedEvent, setSelectedEvent] = useState(false)
+    const [selectedEvent, setSelectedEvent] = useState(null)
     const [statusModal, setStatusModal] = useState(false)
 
     let minDate = new Date();
@@ -42,33 +43,28 @@ export default function Kalender({events}:any){
       setDate1(value)
       setTimeout(() => {checkEvent(value)}, 100) //checkEvent(date1)
 }
-  const checkEvent = (date) => {
-    console.log(date)
+  const checkEvent = (date:any) => {
     let newEvents:any = []
-    events.map(event => {
+    events.map((event:any) => {
         event.date = new Date(event.date)
         
         newEvents.push(event)
     })
     console.log(newEvents)
 
-    // Check if any object in the array has key1 equal to date
-    let foundObject = false
-    foundObject = newEvents.find(function(obj) {
+    let foundObject = newEvents.find(function(obj:any) {
         return obj.date.toLocaleDateString() === date.toLocaleDateString();
     });
-    
-        // Check the result
-        if (foundObject) {
-        setSelectedEvent(foundObject)
-        console.log('Object found:', foundObject);
-        } else {
-        setSelectedEvent(false)
-        console.log('Object not found.');
-        }
-  }
 
-  return (
+    console.log(foundObject)
+    if (foundObject) {
+        setSelectedEvent(foundObject)
+        } else {
+        setSelectedEvent(null)
+        }
+    }
+
+return (
     <div className="w-[1100px] m-auto border-1 border-slate-500 rounded-md bg-white p-2">
         {statusModal && <div onClick={() => setStatusModal(!statusModal)} className='bg-slate-600/40 fixed left-0 top-0 w-screen h-screen z-[998]'></div> }
         {statusModal && <KalenderModal />}
@@ -79,26 +75,26 @@ export default function Kalender({events}:any){
             <div className='bg-softGray text-center px-12 py-1 rounded-md'>The rolling stones events 2023</div>
             <div></div>
         </div>
-      <div className="flex justify-around p-10">
+        <div className="flex justify-around p-10">
         <div>
             {selectedEvent ? (
                 <>
                     <div className='font-bold'>Available on</div>
-                    <h1 className="font-extrabold text-[37px] text-primary">{moment(selectedEvent.date).format('Do MMMM YYYY')}</h1>
+                    <h1 className="font-extrabold text-[37px] text-primary">{moment(selectedEvent?.date).format('Do MMMM YYYY')}</h1>
                     <div className='flex mt-5'>
-                        <img className='w-[75px] h-[75px] rounded-full mr-5' src={selectedEvent?.speaker?.photo_url} alt="" />
+                        <Image width={500} height={500}  className='w-[75px] h-[75px] rounded-full mr-5' src={selectedEvent?.speaker?.photo_url} alt="" />
                         <div>
                             <h1 className='text-[15px] font-bold'>{selectedEvent?.speaker?.name}</h1>
                             <p className='text-[10px]'>{selectedEvent?.speaker?.role}</p>
                         </div>
                     </div>
-                    <h1 className='mt-5 font-bold text-[26px]'>{selectedEvent.name}</h1>
-                    <div className='mt-5'><i className="fa-regular fa-clock mr-2"></i>{moment(selectedEvent.date).format('h:mm')} WIB</div>
+                    <h1 className='mt-5 font-bold text-[26px]'>{selectedEvent?.name}</h1>
+                    <div className='mt-5'><i className="fa-regular fa-clock mr-2"></i>{moment(selectedEvent?.date).format('h:mm')} WIB</div>
                     <div className='mt-5'><button className='bg-primary py-[17px] px-[87px] rounded-[30px]'>Join Watchlist</button></div>
                 </>
             ) : (
                 <>
-                    <img src="/empty-events.svg" alt="empty event" />
+                    <Image width={500} height={500} src="/empty-events.svg" alt="empty event" />
                     <div className='text-center'>There are no event on this date</div>
                 </>
             )}
